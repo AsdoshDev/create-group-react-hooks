@@ -1,0 +1,17 @@
+.user {
+  //   display: flex;
+  //   flex-direction: row;
+  width: 125px;
+  padding: 10px;
+  box-sizing: border-box;
+
+  &.active {
+    border: 1px solid red;
+  }
+
+  img {
+    width: 100px;
+    height: 100px;
+    display: block;
+  }
+}

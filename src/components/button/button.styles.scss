@@ -1,0 +1,31 @@
+button {
+  border: none;
+  outline: none;
+  transition: all 0.3s;
+  cursor: pointer;
+  width: 150px;
+  color: #fff;
+  height: 40px;
+  border-radius: 50px;
+  background: #000;
+  margin: 10px;
+  font-size: 1rem;
+
+  &:hover {
+    background: white;
+    color: #000;
+    border: 1px solid #000;
+  }
+
+  &:active {
+    background: white;
+    outline: none;
+    border: none;
+  }
+
+  &:disabled {
+    background: #ddd;
+    color: #333;
+    cursor: not-allowed;
+  }
+}
