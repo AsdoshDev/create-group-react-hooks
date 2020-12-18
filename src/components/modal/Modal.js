@@ -9,8 +9,8 @@ export const Modal = props => {
                 if (context.showModal) {
                     return (
                         <div className="modal">
+                            <span id="close" onClick={context.toggleModal}>X</span>
                             {props.children}
-                            <button onClick={context.toggleModal}>Hide Me</button>
                         </div>
                     );
                 }

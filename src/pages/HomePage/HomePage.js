@@ -4,6 +4,7 @@ import Button from '../../components/button/Button';
 import { ModalContext } from '../../util/context';
 import GroupList from '../../components/group-list/GroupList';
 import { Input } from '../../components/input/Input';
+import './home-page.scss';
 
 export const HomePage = () => {
     const [state, setState] = useState({ groups: [], filterGroups: [], filterInput: '' });
@@ -15,7 +16,6 @@ export const HomePage = () => {
     }
     const filterInputField = {
         id: 'filter',
-        label: "Search groups",
         name: "search",
         placeholder: "Search groups",
         value: state.filterInput,
@@ -73,14 +73,16 @@ export const HomePage = () => {
 
     return (
         <>
-            <Button props={createGrpBtn}></Button>
-
+            <header>
+                <Input props={filterInputField} />
+                <Button props={createGrpBtn} />
+            </header>
+            <GroupList list={state.filterGroups} />
             <CreateGroup
                 addGroup={addGroup}
                 removeGroup={removeGroup}
             />
-            <Input props={filterInputField} />
-            <GroupList list={state.filterGroups} />
+
         </>
     )
 }

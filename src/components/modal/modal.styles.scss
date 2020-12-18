@@ -13,11 +13,18 @@
   .header {
     font-size: 40px;
   }
+
+  #close {
+    position: absolute;
+    right: 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
 }
 
 @media (min-width: 600px) {
   .modal {
     width: 650px;
-    left: calc(50% - 250px);
+    left: calc(60% - 250px);
   }
 }
