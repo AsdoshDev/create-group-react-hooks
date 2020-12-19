@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Button from '../../components/button/Button'
 import { Input } from '../../components/input/Input';
-import { UserGroup } from '../../components/user-group/UserGroup';
+import { UserList } from '../../components/user-list/UserList';
 import userImage from './../../assets/user.png';
 import { Modal } from '../../components/modal/Modal';
 import './create-group.scss';
@@ -9,7 +9,7 @@ import { useFetch } from '../../util/useFetch';
 import { API } from '../../util/api';
 
 
-export const CreateGroup = ({ addGroup, removeGroup }) => {
+export const CreateGroup = ({ addGroup }) => {
 
     function initiateGroup() {
         return { name: '', desc: '', users: [] };
@@ -92,13 +92,8 @@ export const CreateGroup = ({ addGroup, removeGroup }) => {
         resetModal();
     }
 
-    const removeClick = () => {
-        removeGroup(group);
-        resetModal();
-    }
+    const updateBtn = { id: 'update', label: 'Add Group', onClick: updateClick }
 
-    const updateBtn = { id: 'update', label: 'Update Group', onClick: updateClick }
-    const removeBtn = { id: 'remove', label: 'Remove Group', onClick: removeClick }
 
     return (
         <Modal>
@@ -111,10 +106,9 @@ export const CreateGroup = ({ addGroup, removeGroup }) => {
                         <Input props={grpDescInput} />
                     </div>
                 </div>
-                {group.users ? <UserGroup list={group.users} toggleUser={(e, user) => toggleUser(e, user)} /> : null}
+                {group.users ? <UserList list={group.users} toggleUser={(e, user) => toggleUser(e, user)} /> : null}
                 <div className='buttons'>
                     <Button props={updateBtn} />
-                    <Button props={removeBtn} />
                 </div>
             </div>
         </Modal>
