@@ -5,6 +5,7 @@ import { ModalContext } from '../../util/context';
 import GroupList from '../../components/group-list/GroupList';
 import { Input } from '../../components/input/Input';
 import './home-page.scss';
+import { ModifyGroup } from '../ModifyGroup/ModifyGroup';
 
 export const HomePage = () => {
 
@@ -12,15 +13,27 @@ export const HomePage = () => {
         groups: [],
         filterGroups: [],
         filterInput: '',
-        sortDescending: { Name: false, Description: false, Users: false }
+        sortDescending: { Name: false, Description: false, Users: false },
+        isEditing: false
     });
 
     const modal = useContext(ModalContext);
 
+
+    const openModal = () => {
+        setState(prevState => {
+            return {
+                ...prevState,
+                isEditing: false,
+            }
+        })
+        modal.toggleModal();
+    }
+
     const createGrpBtn = {
         id: 'update',
         label: 'Create Group',
-        onClick: modal.toggleModal
+        onClick: openModal
     }
     const filterInputField = {
         id: 'filter',
@@ -30,32 +43,43 @@ export const HomePage = () => {
         onChange: e => onInputChange(e)
     }
 
-    const getSelectedUsers = (group) => group.users.filter(user => user.selected);
+    // const getSelectedUsers = (group) => group.users.filter(user => user.selected);
 
     const addGroup = (group) => {
         const origGroup = state.groups;
         const existingGroup = origGroup.find(grp => grp.name === group.name);
-        let selectedUsers = getSelectedUsers(group)
+        // let selectedUsers = getSelectedUsers(group)
 
         setState(prevState => {
             const updatedGroups = existingGroup ?
                 origGroup.map(grp =>
                     grp.name === group.name ?
-                        { ...grp, desc: group.desc, users: selectedUsers }
+                        { ...grp, desc: group.desc, users: group.users }
                         : grp
                 )
                 :
-                [...prevState.groups, { ...group, users: selectedUsers }];
+                [...prevState.groups, { ...group, users: group.users }];
 
             return {
                 ...prevState,
+                isEditing: false,
                 groups: updatedGroups,
                 filterGroups: updatedGroups
             };
         });
+        modal.toggleModal();
     }
 
-    const updateGroup = (group) => {
+
+
+    const openUpdateModal = (group) => {
+        setState(prevState => {
+            return {
+                ...prevState,
+                currentGroup: group,
+                isEditing: true
+            }
+        })
         modal.toggleModal();
     }
 
@@ -100,13 +124,14 @@ export const HomePage = () => {
 
     }
 
+
     const onInputChange = (e) => {
         const { value } = e.target;
         setState(prevState => (
             {
                 ...prevState,
                 filterInput: value,
-                filterGroups: prevState.groups.filter(group => group.name.indexOf(value) > -1)
+                filterGroups: prevState.groups.filter(group => group.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
             }
         ))
     }
@@ -119,12 +144,19 @@ export const HomePage = () => {
             </header>
             <GroupList
                 list={state.filterGroups}
-                updateGroup={updateGroup}
+                updateGroup={openUpdateModal}
                 sortGroup={sortGroups}
                 removeGroup={removeGroup} />
-            <CreateGroup
-                addGroup={addGroup}
-            />
+            {
+                state.isEditing ? <ModifyGroup
+                    existingGroup={state.currentGroup}
+                    addGroup={addGroup} />
+                    : <CreateGroup
+                        addGroup={addGroup}
+                    />
+            }
+
+
         </>
     )
 }

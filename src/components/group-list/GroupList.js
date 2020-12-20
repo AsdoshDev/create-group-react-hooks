@@ -22,7 +22,7 @@ export default function GroupList({ list, updateGroup, removeGroup, sortGroup })
                         <tr key={index}>
                             <td>{group.name}</td>
                             <td>{group.desc}</td>
-                            <td>{group.users && group.users.length > 0 ? group.users.map(usr => usr.name).join(', ') : null}</td>
+                            <td>{group.users && group.users.length > 0 ? group.users.filter(user => user.selected === true).map(usr => usr.name).join(', ') : null}</td>
                             <td><Button props={{ ...updateBtn, onClick: e => updateGroup(group) }} /></td>
                             <td><Button props={{ ...removeBtn, onClick: e => removeGroup(group, e) }} /></td>
                         </tr>

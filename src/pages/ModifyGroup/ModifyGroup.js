@@ -1,33 +1,43 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from '../../components/button/Button'
 import { Input } from '../../components/input/Input';
 import { UserList } from '../../components/user-list/UserList';
 import userImage from './../../assets/user.png';
 import { Modal } from '../../components/modal/Modal';
-import './create-group.scss';
+import './modify-group.scss';
 import { useFetch } from '../../util/useFetch';
 import { API } from '../../util/api';
 
 
-export const CreateGroup = ({ addGroup }) => {
+export const ModifyGroup = ({ addGroup, existingGroup }) => {
 
-    console.log("CREATE RENDERED")
+    // function initiateGroup() {
+    //     console.log(existingGroup)
+    //     if (existingGroup)
+    //         return { name: existingGroup.name, desc: existingGroup.desc, users: existingGroup.users };
+    //     return { name: '', desc: '', users: [] };
+    // }
+    console.log("MODIFY RENDERED")
 
-    function initiateGroup() {
-        return { name: '', desc: '', users: [] };
-    }
-    const [group, setState] = useState(() => initiateGroup());
+    const [group, setState] = useState(existingGroup);
+
+    useEffect(
+        () => {
+            setState(existingGroup)
+        },
+        [existingGroup]
+    )
 
     useFetch(API.USERS, null, function (response) {
         setState(prevState => (
             {
                 ...prevState,
-                users: response.map(user => (
+                users: prevState.users.length === 0 ? response.map(user => (
                     {
                         ...user,
                         selected: false
                     })
-                )
+                ) : existingGroup.users
             }
         ))
     });
@@ -94,13 +104,13 @@ export const CreateGroup = ({ addGroup }) => {
         resetModal();
     }
 
-    const updateBtn = { id: 'update', label: 'Add Group', onClick: updateClick }
+    const updateBtn = { id: 'update', label: 'Update Group', onClick: updateClick }
 
 
     return (
         <Modal>
             <div id='createGroup'>
-                <h1 className="header">Create Group</h1>
+                <h1 className="header">Modify Group</h1>
                 <div id='groupDtls'>
                     <img alt={'logo'} src={userImage} />
                     <div id="groupFields">
