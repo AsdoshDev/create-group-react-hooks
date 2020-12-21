@@ -17,7 +17,7 @@ export const HomePage = () => {
         isEditing: false
     });
 
-    const modal = useContext(ModalContext);
+    // const modal = useContext(ModalContext);
 
 
     const openModal = () => {
@@ -27,7 +27,7 @@ export const HomePage = () => {
                 isEditing: false,
             }
         })
-        modal.toggleModal();
+        // modal.toggleModal();
     }
 
     const createGrpBtn = {
@@ -67,7 +67,7 @@ export const HomePage = () => {
                 filterGroups: updatedGroups
             };
         });
-        modal.toggleModal();
+        // modal.toggleModal();
     }
 
 
@@ -80,7 +80,7 @@ export const HomePage = () => {
                 isEditing: true
             }
         })
-        modal.toggleModal();
+        // modal.toggleModal();
     }
 
 
@@ -89,7 +89,8 @@ export const HomePage = () => {
             {
                 ...prevState,
                 groups: prevState.groups.filter(grp => grp.name !== group.name),
-                filterGroups: prevState.groups.filter(grp => grp.name !== group.name)
+                filterGroups: prevState.groups.filter(grp => grp.name !== group.name),
+                isEditing: false
             }));
     }
 
@@ -155,8 +156,6 @@ export const HomePage = () => {
                         addGroup={addGroup}
                     />
             }
-
-
         </>
     )
 }

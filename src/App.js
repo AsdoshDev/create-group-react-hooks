@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { HomePage } from './pages/HomePage/HomePage';
 
 function App() {
-  const [showModal, updateShowModal] = useState(false);
+  const [showModal, updateShowModal] = useState(true);
   const toggleModal = () => updateShowModal(state => !state)
   return (
     <ModalContext.Provider value={{ showModal, toggleModal }}>
