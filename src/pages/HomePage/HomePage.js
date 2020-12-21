@@ -50,8 +50,6 @@ export const HomePage = () => {
     const addGroup = (group) => {
         const origGroup = state.groups;
         const existingGroup = origGroup.find(grp => grp.name === group.name);
-        // let selectedUsers = getSelectedUsers(group)
-
         setState(prevState => {
             const updatedGroups = existingGroup ?
                 origGroup.map(grp =>
@@ -69,7 +67,6 @@ export const HomePage = () => {
                 filterGroups: updatedGroups
             };
         });
-        // modal.toggleModal();
     }
 
 
@@ -82,7 +79,6 @@ export const HomePage = () => {
                 isEditing: true
             }
         })
-        // modal.toggleModal();
     }
 
 
