@@ -9,18 +9,8 @@ import { useFetch } from '../../util/useFetch';
 import { API } from '../../util/api';
 
 
-export const ModifyGroup = ({ addGroup, existingGroup }) => {
-
-    // function initiateGroup() {
-    //     console.log(existingGroup)
-    //     if (existingGroup)
-    //         return { name: existingGroup.name, desc: existingGroup.desc, users: existingGroup.users };
-    //     return { name: '', desc: '', users: [] };
-    // }
-    console.log("MODIFY RENDERED")
-
-    const [group, setState] = useState(existingGroup);
-
+export const ModifyGroup = ({ addGroup, existingGroup, title }) => {
+    const [newGroup, setState] = useState(existingGroup);
     useEffect(
         () => {
             setState(existingGroup)
@@ -28,18 +18,20 @@ export const ModifyGroup = ({ addGroup, existingGroup }) => {
         [existingGroup]
     )
 
+    console.log(existingGroup.users.filter(user => user.selected === true))
     useFetch(API.USERS, null, function (response) {
-        setState(prevState => (
-            {
+
+        setState(prevState => {
+            return {
                 ...prevState,
-                users: prevState.users.length === 0 ? response.map(user => (
+                users: existingGroup.users.length === 0 ? response.map(user => (
                     {
                         ...user,
                         selected: false
                     })
                 ) : existingGroup.users
             }
-        ))
+        })
     });
 
     const resetModal = () => {
@@ -85,7 +77,7 @@ export const ModifyGroup = ({ addGroup, existingGroup }) => {
         id: 'name',
         label: "Name",
         placeholder: "Enter name",
-        value: group.name,
+        value: newGroup.name,
         name: "name",
         onChange: e => onInputChange(e)
     }
@@ -95,22 +87,22 @@ export const ModifyGroup = ({ addGroup, existingGroup }) => {
         label: "Group Description",
         name: "desc",
         placeholder: "Enter description",
-        value: group.desc,
+        value: newGroup.desc,
         onChange: e => onInputChange(e)
     }
 
     const updateClick = () => {
-        addGroup(group);
+        addGroup(newGroup);
         resetModal();
     }
 
-    const updateBtn = { id: 'update', label: 'Update Group', onClick: updateClick }
+    const updateBtn = { id: 'update', label: title, onClick: updateClick }
 
 
     return (
         <Modal>
-            <div id='createGroup'>
-                <h1 className="header">Modify Group</h1>
+            <div id='modifyGroup'>
+                <h1 className="header">{title}</h1>
                 <div id='groupDtls'>
                     <img alt={'logo'} src={userImage} />
                     <div id="groupFields">
@@ -118,7 +110,7 @@ export const ModifyGroup = ({ addGroup, existingGroup }) => {
                         <Input props={grpDescInput} />
                     </div>
                 </div>
-                {group.users ? <UserList list={group.users} toggleUser={(e, user) => toggleUser(e, user)} /> : null}
+                {newGroup.users ? <UserList list={newGroup.users} toggleUser={(e, user) => toggleUser(e, user)} /> : null}
                 <div className='buttons'>
                     <Button props={updateBtn} />
                 </div>

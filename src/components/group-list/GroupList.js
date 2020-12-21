@@ -19,7 +19,7 @@ export default function GroupList({ list, updateGroup, removeGroup, sortGroup })
             <tbody>
                 {
                     list.map((group, index) =>
-                        <tr key={index}>
+                        <tr key={group.name}>
                             <td>{group.name}</td>
                             <td>{group.desc}</td>
                             <td>{group.users && group.users.length > 0 ? group.users.filter(user => user.selected === true).map(usr => usr.name).join(', ') : null}</td>
