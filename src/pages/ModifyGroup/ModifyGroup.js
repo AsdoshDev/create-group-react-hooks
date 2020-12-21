@@ -18,7 +18,6 @@ export const ModifyGroup = ({ addGroup, existingGroup, title }) => {
         [existingGroup]
     )
 
-    console.log(existingGroup.users.filter(user => user.selected === true))
     useFetch(API.USERS, null, function (response) {
 
         setState(prevState => {
