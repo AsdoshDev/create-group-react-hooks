@@ -9,7 +9,7 @@ export const Modal = props => {
                 if (context.showModal) {
                     return (
                         <div className="modal">
-                            <span id="close" onClick={context.toggleModal}>X</span>
+                            {/* <span id="close" onClick={context.toggleModal}>X</span> */}
                             {props.children}
                         </div>
                     );

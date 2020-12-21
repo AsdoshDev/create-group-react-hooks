@@ -1,12 +1,18 @@
 import { React, useState, useContext } from 'react';
-import Button from '../../components/button/Button';
 import { ModalContext } from '../../util/context';
 import GroupList from '../../components/group-list/GroupList';
 import { Input } from '../../components/input/Input';
 import './home-page.scss';
 import { ModifyGroup } from '../ModifyGroup/ModifyGroup';
+import { useFetch } from '../../util/useFetch';
+import { API } from '../../util/api';
 
 export const HomePage = () => {
+
+    const MODALS = {
+        CREATE_MODAL: "Create Group",
+        MODIFY_MODAL: "Modify Group"
+    }
 
     const [state, setState] = useState({
         groups: [],
@@ -14,29 +20,29 @@ export const HomePage = () => {
         filterInput: '',
         sortDescending: { Name: false, Description: false, Users: false },
         currentGroup: { name: '', desc: '', users: [] },
-        modalTitle: "Create Group"
+        modalTitle: MODALS.CREATE_MODAL,
     });
 
     const modal = useContext(ModalContext);
 
+    useFetch(API.USERS, null, function (response) {
 
-    const openCreateModal = () => {
         setState(prevState => {
             return {
                 ...prevState,
-                currentGroup: { name: '', desc: '', users: prevState.currentGroup.users.map(user => ({ ...user, selected: false })) },
-                modalTitle: "Create Group"
+                currentGroup: {
+                    ...prevState.currentGroup,
+                    users: response.map(user => (
+                        {
+                            ...user,
+                            selected: false
+                        })
+                    )
+                }
             }
         })
-        if (modal.showModal === false)
-            modal.toggleModal();
-    }
+    });
 
-    const createGrpBtn = {
-        id: 'update',
-        label: 'Create Group',
-        onClick: openCreateModal
-    }
     const filterInputField = {
         id: 'filter',
         name: "search",
@@ -45,7 +51,6 @@ export const HomePage = () => {
         onChange: e => onInputChange(e)
     }
 
-    // const getSelectedUsers = (group) => group.users.filter(user => user.selected);
 
     const addGroup = (group) => {
         const origGroup = state.groups;
@@ -64,7 +69,7 @@ export const HomePage = () => {
                 ...prevState,
                 groups: updatedGroups,
                 filterGroups: updatedGroups,
-                modalTitle: "Create Group"
+                modalTitle: MODALS.CREATE_MODAL
             };
         });
     }
@@ -76,7 +81,7 @@ export const HomePage = () => {
             return {
                 ...prevState,
                 currentGroup: group,
-                modalTitle: "Update Group"
+                modalTitle: MODALS.MODIFY_MODAL
             }
         })
         if (modal.showModal === false)
@@ -89,7 +94,9 @@ export const HomePage = () => {
             {
                 ...prevState,
                 groups: prevState.groups.filter(grp => grp.name !== group.name),
-                filterGroups: prevState.groups.filter(grp => grp.name !== group.name)
+                filterGroups: prevState.groups.filter(grp => grp.name !== group.name),
+                modalTitle: MODALS.CREATE_MODAL,
+                currentGroup: { name: '', desc: '', users: state.currentGroup.users.map(user => ({ ...user, selected: false })) },
             }));
     }
 
@@ -140,16 +147,15 @@ export const HomePage = () => {
         <>
             <header>
                 <Input props={filterInputField} />
-                <Button props={createGrpBtn} />
             </header>
             <GroupList
                 list={state.filterGroups}
                 updateGroup={openUpdateModal}
                 sortGroup={sortGroups}
                 removeGroup={removeGroup} />
-            {modal.showModal ? <ModifyGroup
+            <ModifyGroup
                 existingGroup={state.currentGroup}
-                addGroup={addGroup} title={state.modalTitle} /> : null}
+                addGroup={addGroup} title={state.modalTitle} />
         </>
     )
 }

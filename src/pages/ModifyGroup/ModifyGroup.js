@@ -18,20 +18,6 @@ export const ModifyGroup = ({ addGroup, existingGroup, title }) => {
         [existingGroup]
     )
 
-    useFetch(API.USERS, null, function (response) {
-
-        setState(prevState => {
-            return {
-                ...prevState,
-                users: existingGroup.users.length === 0 ? response.map(user => (
-                    {
-                        ...user,
-                        selected: false
-                    })
-                ) : existingGroup.users
-            }
-        })
-    });
 
     const resetModal = () => {
         setState(prevState =>
