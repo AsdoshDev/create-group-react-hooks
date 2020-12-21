@@ -17,7 +17,7 @@ export const HomePage = () => {
         isEditing: false
     });
 
-    // const modal = useContext(ModalContext);
+    const modal = useContext(ModalContext);
 
 
     const openModal = () => {
@@ -27,7 +27,9 @@ export const HomePage = () => {
                 isEditing: false,
             }
         })
-        // modal.toggleModal();
+        if (modal.showModal === false) {
+            modal.toggleModal();
+        }
     }
 
     const createGrpBtn = {
