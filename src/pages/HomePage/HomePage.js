@@ -101,11 +101,12 @@ export const HomePage = () => {
     }
 
     const getValueToBeSorted = (value) => {
-        return Array.isArray(value) ? value.map(user => user.name).join('') : value;
+        return Array.isArray(value) ? value.filter(user => user.selected === true).map(user => user.name).join('') : value;
     }
 
 
     const sortGroups = (columnClicked) => {
+        debugger;
         const columnMapping = { Name: 'name', Description: 'desc', Users: 'users' }
         const columnToBeSorted = columnMapping[columnClicked]
         let updatedGroups;
