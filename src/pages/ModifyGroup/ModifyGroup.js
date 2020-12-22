@@ -5,9 +5,7 @@ import { UserList } from '../../components/user-list/UserList';
 import userImage from './../../assets/user.png';
 import { Modal } from '../../components/modal/Modal';
 import './modify-group.scss';
-import { useFetch } from '../../util/useFetch';
-import { API } from '../../util/api';
-
+import PropTypes from 'prop-types';
 
 export const ModifyGroup = ({ addGroup, existingGroup, title }) => {
     const [newGroup, setState] = useState(existingGroup);
@@ -64,6 +62,7 @@ export const ModifyGroup = ({ addGroup, existingGroup, title }) => {
         placeholder: "Enter name",
         value: newGroup.name,
         name: "name",
+        required: true,
         onChange: e => onInputChange(e)
     }
 
@@ -77,8 +76,11 @@ export const ModifyGroup = ({ addGroup, existingGroup, title }) => {
     }
 
     const updateClick = () => {
-        addGroup(newGroup);
-        resetModal();
+        const { name, desc, users } = newGroup;
+        if (name && desc && users.some(user => user.selected === true) > 0) {
+            addGroup(newGroup);
+            resetModal();
+        }
     }
 
     const updateBtn = { id: 'update', label: title, onClick: updateClick }
@@ -102,4 +104,9 @@ export const ModifyGroup = ({ addGroup, existingGroup, title }) => {
             </div>
         </Modal>
     )
+}
+
+ModifyGroup.propTypes = {
+    modalTitle: PropTypes.string,
+    existingGroup: PropTypes.object
 }

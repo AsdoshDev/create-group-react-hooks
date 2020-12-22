@@ -1,6 +1,7 @@
 import React from 'react'
 import './group-list.styles.scss';
 import Button from '../button/Button';
+import PropTypes from 'prop-types';
 
 export default function GroupList({ list, updateGroup, removeGroup, sortGroup }) {
 
@@ -31,4 +32,11 @@ export default function GroupList({ list, updateGroup, removeGroup, sortGroup })
             </tbody>
         </table>
     )
+}
+
+GroupList.propTypes = {
+    list: PropTypes.array,
+    updateGroup: PropTypes.func,
+    removeGroup: PropTypes.func,
+    sortGroup: PropTypes.func
 }
